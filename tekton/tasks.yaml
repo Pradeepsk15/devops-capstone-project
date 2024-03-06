@@ -64,7 +64,7 @@ spec:
       type: string
       default: "-v"
     - name: database_uri
-      description: DB connction string
+      description: DB connection string
       type: string
       default: "sqlite:///test.db"
   steps:
@@ -73,7 +73,7 @@ spec:
       workingDir: $(workspaces.source.path)
       env:
         - name: DATABASE_URI
-          value: $(params.database_uri)
+          value: "sqlite:///test.db"
       script: |
         #!/bin/bash
         set -e
