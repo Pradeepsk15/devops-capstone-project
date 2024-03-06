@@ -25,6 +25,7 @@ HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
 class TestAccountService(TestCase):
     """Account Service Tests"""
 
@@ -137,13 +138,12 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], account.name)
-        
+  
     def test_account_not_focund(self):
         """ Not return account which was not found """
-        response  = self.client.get(f"{BASE_URL}/0")     
+        response = self.client.get(f"{BASE_URL}/0") 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    
     def test_update_account(self):
         """It should Update a single Account"""
         account = self._create_accounts(1)[0]
@@ -151,9 +151,9 @@ class TestAccountService(TestCase):
             f"{BASE_URL}/{account.id}", content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        #Update the account
+        # Update the account
         data = resp.get_json()
-        
+
         data["name"] = "Unknown"
         resp = self.client.put(f"{BASE_URL}/{data['id']}", json=data)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -163,25 +163,24 @@ class TestAccountService(TestCase):
     def test_delete_account(self):
         """It should Update a single Account"""
         account = self._create_accounts(1)[0]
-        #Delete the account
+        # Delete the account
         resp = self.client.delete(f"{BASE_URL}/{account.id}")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
-        
+  
     def test_get_account_list(self):
         """It should Get a list of Accounts"""
         self._create_accounts(5)
 
         resp = self.client.get(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data=resp.get_json()
-        self.assertEqual(len(data),5)
-    
-
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+   
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+   
     def test_security_headers(self):
         """It should return security headers"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
@@ -199,5 +198,4 @@ class TestAccountService(TestCase):
         """It should return CORS headers"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.headers.get('Access-Control-Allow-Origin'),"*")
-        
+        self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), "*")
