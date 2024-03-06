@@ -64,7 +64,7 @@ spec:
       type: string
       default: "-v"
     - name: database_uri
-      description: DB coonction string
+      description: DB connction string
       type: string
       default: "sqlite:///test.db"
   steps:
